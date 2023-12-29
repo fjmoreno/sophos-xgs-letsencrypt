@@ -1,5 +1,5 @@
 #! /bin/sh
-HOME=/config/acme
+HOME=/conf/acme
 set -x
 while :;do
     while IFS=";" read -r certificateFileName listOfAlternativeNames
@@ -8,12 +8,12 @@ while :;do
             echo "missing config parameter"
             exit
         fi
-        python3 -m http.server 8000 -d /config/acme/http &
+        python3 -m http.server 8000 -d /conf/acme/http &
         pythonPID=$!
         iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination :8000
         certificateNames=$(echo $listOfAlternativeNames | sed "s/,/ -d /g")
-        /config/acme/acme.sh \
-        -w /config/acme/http/ --issue --server letsencrypt --reloadcmd "killall -SIGHUP httpd" \
+        /conf/acme/acme.sh \
+        -w /conf/acme/http/ --issue --server letsencrypt --reloadcmd "killall -SIGHUP httpd" \
         --cert-file      /conf/certificate/$certificateFileName.pem \
         --key-file       /conf/certificate/private/$certificateFileName.key \
         -d $certificateNames
@@ -26,6 +26,6 @@ while :;do
         killall -SIGHUP httpd
         # all done
 
-    done < /config/acme/config.csv
+    done < /conf/acme/config.csv
     sleep 86400 # run every day
 done
