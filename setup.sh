@@ -5,6 +5,7 @@ CONF=/var/acme
 mkdir -p $HOME/http
 mkdir -p $CONF
 cd $HOME
+mount -o "remount,exec" /var
 curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh -o acme.sh
 chmod +x acme.sh
 curl https://raw.githubusercontent.com/helsinki-systems/sophos-xgs-letsencrypt/main/renew.sh -o renew.sh
@@ -19,6 +20,7 @@ echo "Please insert letsencrypt account email"
 read email
 chmod +x $HOME/acme.sh
 $HOME/acme.sh --config-home $CONF --register-account -m $email --server letsencrypt
+mount -o "remount,noexec" /var
 
 
 ## install on boot

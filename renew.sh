@@ -2,6 +2,7 @@
 CONF=/var/acme
 HOME=/var/acme
 set -x
+touch /var/acme/running
 while :;do
     while IFS=";" read -r certificateFileName listOfAlternativeNames
     do
@@ -12,13 +13,15 @@ while :;do
         python3 -m http.server 8000 -d $HOME/http &
         pythonPID=$!
         iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination :8000
-        certificateNames=$(echo $listOfAlternativeNames | sed "s/,/ -d /g")
+        mount -o "remount,exec" /var
+       certificateNames=$(echo $listOfAlternativeNames | sed "s/,/ -d /g")
         $HOME/acme.sh \
-		--config-home $CONF \
+        --config-home $CONF \
         -w $HOME/http/ --issue --server letsencrypt --reloadcmd "killall -SIGHUP httpd" \
         --cert-file      /conf/certificate/$certificateFileName.pem \
         --key-file       /conf/certificate/private/$certificateFileName.key \
         -d $certificateNames
+        mount -o "remount,noexec" /var
 
         # clean up redirect rule
         linenumber="$(iptables -t nat -L PREROUTING -n -v --line-numbers | grep "tcp dpt:80 to::8000" | cut -d " " -f1)"
