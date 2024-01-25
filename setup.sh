@@ -15,6 +15,8 @@ curl https://raw.githubusercontent.com/helsinki-systems/sophos-xgs-letsencrypt/m
 chmod +x setup.sh
 if [ -e /var/acme/config.csv ]
 then
+    echo "config file already exists, skipping"
+else
     curl https://raw.githubusercontent.com/helsinki-systems/sophos-xgs-letsencrypt/main/config.csv -o $CONF/config.csv
 fi
 chmod +x $HOME/acme.sh
