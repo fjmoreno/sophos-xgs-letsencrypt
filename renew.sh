@@ -14,7 +14,7 @@ while :;do
         iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination :8000
         certificateNames=$(echo $listOfAlternativeNames | sed "s/,/ -d /g")
         $HOME/acme.sh \
-		--conf-home $CONF \
+		--config-home $CONF \
         -w $HOME/http/ --issue --server letsencrypt --reloadcmd "killall -SIGHUP httpd" \
         --cert-file      /conf/certificate/$certificateFileName.pem \
         --key-file       /conf/certificate/private/$certificateFileName.key \
