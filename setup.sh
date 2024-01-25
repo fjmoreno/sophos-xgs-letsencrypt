@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # Setup
-HOME=/conf/acme
+HOME=/var/acme
 mkdir -p $HOME/http
 cd $HOME
 curl https://raw.githubusercontent.com/acmesh-official/acme.sh/master/acme.sh -o acme.sh
