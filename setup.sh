@@ -20,11 +20,11 @@ fi
 chmod +x $HOME/acme.sh
 if [ -e /var/acme/ca/acme-v02.api.letsencrypt.org/directory/account.json ]
 then
+    echo "Account already registered (/var/acme/ca/.. exists)"
+else
     echo "Please insert letsencrypt account email"
     read email
     $HOME/acme.sh --config-home $CONF --register-account -m $email --server letsencrypt
-else
-	echo "Account already registered (/var/acme/ca/.. exists)"
 fi
 mount -o "remount,noexec" /var
 
