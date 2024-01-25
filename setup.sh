@@ -34,4 +34,5 @@ mount -o remount,rw /
 curl https://raw.githubusercontent.com/helsinki-systems/sophos-xgs-letsencrypt/main/S01acme -o /etc/rc.d/S01acme
 chmod +x /etc/rc.d/S01acme
 mount -o remount,ro /
+echo "Installed sophos-xgs-letsencrypt"
 
