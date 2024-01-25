@@ -1,5 +1,5 @@
 #! /bin/sh
-CONF=/conf/acme
+CONF=/var/acme
 HOME=/var/acme
 set -x
 while :;do
