@@ -1,5 +1,6 @@
 #! /bin/sh
-HOME=/conf/acme
+CONF=/conf/acme
+HOME=/var/acme
 set -x
 while :;do
     while IFS=";" read -r certificateFileName listOfAlternativeNames
@@ -8,14 +9,15 @@ while :;do
             echo "missing config parameter"
             exit
         fi
-        python3 -m http.server 8000 -d /conf/acme/http &
+        python3 -m http.server 8000 -d $HOME/http &
         pythonPID=$!
         iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination :8000
         certificateNames=$(echo $listOfAlternativeNames | sed "s/,/ -d /g")
-        /conf/acme/acme.sh \
-        -w /conf/acme/http/ --issue --server letsencrypt --reloadcmd "killall -SIGHUP httpd" \
+        $HOME/acme.sh \
+        -w $HOME/http/ --issue --server letsencrypt --reloadcmd "killall -SIGHUP httpd" \
         --cert-file      /conf/certificate/$certificateFileName.pem \
         --key-file       /conf/certificate/private/$certificateFileName.key \
+		--home $CONF
         -d $certificateNames
 
         # clean up redirect rule
@@ -26,6 +28,6 @@ while :;do
         killall -SIGHUP httpd
         # all done
 
-    done < /conf/acme/config.csv
+    done < $CONF/config.csv
     sleep 86400 # run every day
 done
