@@ -13,4 +13,11 @@ curl https://raw.githubusercontent.com/helsinki-systems/sophos-xgs-letsencrypt/m
 echo "Please insert letsencrypt account email"
 read email
 chmod +x $HOME/acme.sh
-$HOME/acme.sh --home $CONF --register-account -m $email --server letsencrypt
+$HOME/acme.sh --conf-home $CONF --register-account -m $email --server letsencrypt
+
+
+## install on boot
+mount -o remount,rw /
+curl https://raw.githubusercontent.com/helsinki-systems/sophos-xgs-letsencrypt/main/S01acme.csv -o /etc/rc.d/S01acme
+chmod +x /etc/rc.d/S01acme
+mount -o remount,ro /

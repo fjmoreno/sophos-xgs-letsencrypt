@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Starting acme process on boot up
+/var/acme/renew.sh &
+
