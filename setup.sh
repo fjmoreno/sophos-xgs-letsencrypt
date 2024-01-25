@@ -10,4 +10,5 @@ chmod +x renew.sh
 curl https://raw.githubusercontent.com/helsinki-systems/sophos-xgs-letsencrypt/main/config.csv -o config.csv
 echo "Please insert letsencrypt account email"
 read email
+chmod +x /conf/acme/acme.sh
 /conf/acme/acme.sh --register-account -m $email --server letsencrypt
