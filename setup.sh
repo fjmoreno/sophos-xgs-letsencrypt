@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/usr/bin/env sh
 # Setup
 HOME=/conf/acme
 mkdir -p $HOME/http
