@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 # Setup
+set -x
 HOME=/var/acme
 CONF=/var/acme
 mkdir -p $HOME/http
@@ -19,7 +20,10 @@ fi
 echo "Please insert letsencrypt account email"
 read email
 chmod +x $HOME/acme.sh
-$HOME/acme.sh --config-home $CONF --register-account -m $email --server letsencrypt
+if [ -e /var/acme/ca/acme-v02.api.letsencrypt.org/directory/account.json ]
+then
+    $HOME/acme.sh --config-home $CONF --register-account -m $email --server letsencrypt
+fi
 mount -o "remount,noexec" /var
 
 
